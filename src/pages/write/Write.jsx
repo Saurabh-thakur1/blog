@@ -1,6 +1,24 @@
+import { useState } from "react";
 import "./write.css";
 
-export default function Write() {
+export default function Write({ setPosts }) {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  function addPost() {
+    setPosts((posts) => {
+      const newPosts = [
+        ...posts,
+        {
+          title,
+          content,
+          dateCreated: new Date().toLocaleDateString(),
+        },
+      ];
+      setTitle("");
+      setContent("");
+      return newPosts;
+    });
+  }
   return (
     <div className="write">
       <img
@@ -8,7 +26,7 @@ export default function Write() {
         src="https://images.pexels.com/photos/6685428/pexels-photo-6685428.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
         alt=""
       />
-      <form className="writeForm">
+      <div className="writeForm">
         <div className="writeFormGroup">
           <label htmlFor="fileInput">
             <i className="writeIcon fas fa-plus"></i>
@@ -18,6 +36,10 @@ export default function Write() {
             className="writeInput"
             placeholder="Title"
             type="text"
+            value={title}
+            onChange={(e) => {
+              setTitle(e.target.value);
+            }}
             autoFocus={true}
           />
         </div>
@@ -26,13 +48,17 @@ export default function Write() {
             className="writeInput writeText"
             placeholder="Tell your story..."
             type="text"
+            value={content}
+            onChange={(e) => {
+              setContent(e.target.value);
+            }}
             autoFocus={true}
           />
         </div>
-        <button className="writeSubmit" type="submit">
+        <button className="writeSubmit" onClick={addPost}>
           Publish
         </button>
-      </form>
+      </div>
     </div>
   );
 }
